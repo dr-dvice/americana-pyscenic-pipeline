@@ -1,0 +1,26 @@
+# Nextflow run artifacts
+work/
+.nextflow/
+.nextflow.log*
+results/
+results_*/
+test_results/
+report*.html
+timeline*.html
+trace*.txt
+
+# Containers / large objects — never commit (document how to obtain instead)
+*.sif
+
+# cruft
+*.log
+__pycache__/
+*.pyc
+.idea/
+.claude/
+
+# Profiles / fixtures excluded from this release
+conf/gregaria.config
+conf/test.config
+test_data/
+make_test_subset.py
