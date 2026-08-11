@@ -80,11 +80,11 @@ def main():
     rankings_df = pd.DataFrame(rankings_np, index=transposed.index, columns=transposed.columns)
     rankings_df.index.name = "motifs"
 
-    # 5. Write rankings: regions_vs_motifs (what pySCENIC ctx expects)
+    # 5. Write rankings: regions_vs_motifs (index=motifs, columns=regions).
+    # ctxcore parses "regions_vs_motifs" as column_kind=regions, row_kind=motifs,
+    # so the index MUST be named "motifs"
     print("Writing rankings (regions vs motifs)...")
-    rankings_rvm = rankings_df.T
-    rankings_rvm.index.name = "regions"
-    write_feather(rankings_rvm, f"{output_prefix}.regions_vs_motifs.rankings.feather")
+    write_feather(rankings_df, f"{output_prefix}.regions_vs_motifs.rankings.feather")
 
     print(f"\nDone. Rankings database: {output_prefix}.regions_vs_motifs.rankings.feather")
 
