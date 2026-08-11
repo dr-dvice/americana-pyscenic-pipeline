@@ -45,7 +45,14 @@ def create_rankings(scores_mvr, seed):
 
 
 def write_feather(df, path):
-    table = pa.Table.from_pandas(df, preserve_index=True)
+    # ctxcore needs the identifier column ("motifs"/"regions") as a real column
+    # (not a pandas index) AND as the LAST column: it scans from the last column
+    # and its guard `not index_column_idx` wrongly rejects idx 0. So reset the
+    # index to a column, move it to the end, and drop pandas index metadata.
+    idx_name = df.index.name
+    out = df.reset_index()
+    out = out[[c for c in out.columns if c != idx_name] + [idx_name]]
+    table = pa.Table.from_pandas(out, preserve_index=False)
     pf.write_feather(table, path, version=2)
     print(f"  Wrote: {path}")
 
